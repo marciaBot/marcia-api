@@ -2,15 +2,20 @@ package com.marciaApi.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 
 
@@ -22,18 +27,40 @@ public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column
+	
+	@Column(name = "NOME")
 	private String nome;
-	@Column(unique = true)
+	
+	@Column(unique = true, name = "CPF")
 	@NotNull(message = "CPF Não pode ser Nulo")
 	private String cpf;
-	@Column
+	
+	@Column(name = "NUMERO")
 	private String numero;
-	@Column
-	private LocalDateTime createdAt = LocalDateTime.now();
-	@Column
+	
+	@CreatedDate
+	@Column(name = "CREATED_AT")
+	private LocalDateTime created_at;
+	
+	@LastModifiedDate
+	@Column(name = "UPDATED_AT")
+	private LocalDateTime updated_at;
+	
+	@Column(name = "DT_NASCIMENTO")
 	private LocalDate dataNascimento;
 	
+	public LocalDateTime getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(LocalDateTime created_at) {
+		this.created_at = created_at;
+	}
+	public LocalDateTime getUpdated_at() {
+		return updated_at;
+	}
+	public void setUpdated_at(LocalDateTime updated_at) {
+		this.updated_at = updated_at;
+	}
 	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
@@ -64,13 +91,5 @@ public class Cliente {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-	
-	
-	
+
 }
