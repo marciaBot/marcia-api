@@ -19,6 +19,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 
 @Entity
@@ -51,6 +53,7 @@ public class Cliente {
 	private LocalDateTime updated_at;
 	
 	@Column(name = "DT_NASCIMENTO", nullable = false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
 	
 	public LocalDateTime getCreated_at() {
