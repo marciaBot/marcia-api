@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -28,25 +30,27 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "NOME")
+	@Column(name = "NOME", nullable = false)
+	@NotNull(message = "Nome não pode ser Nulo")
 	private String nome;
 	
-	@Column(unique = true, name = "CPF")
+	@Column(unique = true, name = "CPF", nullable = false)
 	@NotNull(message = "CPF Não pode ser Nulo")
 	private String cpf;
 	
-	@Column(name = "NUMERO")
+	@Column(name = "NUMERO", nullable = false)
+	@NotNull(message = "Número não pode ser Nulo")
 	private String numero;
 	
-	@CreatedDate
-	@Column(name = "CREATED_AT")
+	@Column(name = "CREATED_AT", updatable = false)
+	@CreationTimestamp
 	private LocalDateTime created_at;
 	
-	@LastModifiedDate
 	@Column(name = "UPDATED_AT")
+	@UpdateTimestamp
 	private LocalDateTime updated_at;
 	
-	@Column(name = "DT_NASCIMENTO")
+	@Column(name = "DT_NASCIMENTO", nullable = false)
 	private LocalDate dataNascimento;
 	
 	public LocalDateTime getCreated_at() {
