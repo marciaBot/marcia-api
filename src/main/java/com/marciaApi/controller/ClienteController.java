@@ -1,7 +1,5 @@
 package com.marciaApi.controller;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,70 +11,73 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.marciaApi.dto.ClienteDto;
+import com.marciaApi.exception.ApiNotFoundException;
+import com.marciaApi.exception.ApiRequestException;
 import com.marciaApi.model.Cliente;
-import com.marciaApi.repository.ClienteRepository;
+import com.marciaApi.service.ClienteService;
 
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
 	
 	@Autowired
-	ClienteRepository clienteRepository;
+	ClienteService clienteService;
 	
 	@PostMapping
-	public ResponseEntity<ClienteDto> criaCliente(@Valid @RequestBody Cliente cliente) {
+	public ResponseEntity<?> criaCliente(@Valid @RequestBody Cliente cliente) {
 		try {
-			clienteRepository.save(cliente);
-			return ResponseEntity.ok(ClienteDto.converter(cliente));
+			clienteService.create(cliente);
 			
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.ok(ClienteDto.converter(cliente));
+
+		}
+		catch (Exception e) {
+			if(e.getCause().toString().contains("ConstraintViolationException")) {
+				throw new ApiRequestException("Cpf já cadastrado" , e.getCause());
+			} else {
+				throw new ApiRequestException("Campo nulo Inválido" , e.getCause());
+			}
 		}
 	}
 	
 	@PutMapping("/{id}")
-	ResponseEntity<ClienteDto> editaCliente(@PathVariable(required = true) Long id ,@Valid @RequestBody Cliente cliente) {
+	ResponseEntity<?> editaCliente(@PathVariable(required = true) Long id ,@Valid @RequestBody Cliente cliente) {
 		try {
-			Optional<Cliente> clienteBase = clienteRepository.findById(id);
-			if(!clienteBase.isPresent()) {
-				throw new Exception();
-			}
-			cliente.setId(id);
-			clienteRepository.save(cliente);
+			clienteService.edit(id, cliente);
 			return ResponseEntity.ok(ClienteDto.converter(cliente));
 			
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
+			if(e.getCause() != null && e.getCause().toString().contains("ConstraintViolationException")) {
+				throw new ApiRequestException("Cpf já cadastrado" , e.getCause());
+			}
+			else {
+			throw new ApiNotFoundException("Id não encontrado");
+			}
 		}
 	}
 
 	@GetMapping("/{cpf}")
-	public ResponseEntity<ClienteDto> listaCliente(@PathVariable(required = true) String cpf) {
+	public ResponseEntity<?> listaCliente(@PathVariable(required = true) String cpf) {
 		try {
-			Cliente cliente = clienteRepository.findByCpf(cpf);
+			Cliente cliente = clienteService.findByCpf(cpf);
 			return ResponseEntity.ok(ClienteDto.converter(cliente));
 			
 		} catch (NullPointerException e) {
-			return ResponseEntity.notFound().build();
+			throw new ApiNotFoundException("CPF não encontrado");
 		}
 	}
 	
 	@DeleteMapping("/{id}")
-	ResponseEntity<ClienteDto> deletaCliente(@PathVariable(required = true) Long id) {
+	ResponseEntity<?> deletaCliente(@PathVariable(required = true) Long id) {
 		try {
-			Optional<Cliente> cliente = clienteRepository.findById(id);
-			if(!cliente.isPresent()) {
-				throw new Exception();
-			}
-			clienteRepository.deleteById(id);
+			clienteService.delete(id);
 			return ResponseEntity.ok().build();
 			
 		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
+			throw new ApiNotFoundException("Id não encontrado");
 		}
 	}
 }
