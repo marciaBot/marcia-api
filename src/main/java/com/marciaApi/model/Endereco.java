@@ -1,5 +1,8 @@
 package com.marciaApi.model;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "ENDERECO")
@@ -45,9 +52,44 @@ public class Endereco {
 	@Column(name = "OBERSERVACAO")
 	private String observacao;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CLIENTE_ID")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CLIENTE_ID", referencedColumnName = "id")
 	private Cliente cliente;
+	
+	@Transient
+	private Long clienteId;
+
+	@Column(name = "CREATED_AT", updatable = false)
+	@CreationTimestamp
+	private LocalDateTime created_at;
+	
+	@Column(name = "UPDATED_AT")
+	@UpdateTimestamp
+	private LocalDateTime updated_at;
+
+	public LocalDateTime getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(LocalDateTime created_at) {
+		this.created_at = created_at;
+	}
+	
+	public Long getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
+	}
+
+	public LocalDateTime getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(LocalDateTime updated_at) {
+		this.updated_at = updated_at;
+	}
 
 	public Long getId() {
 		return id;
