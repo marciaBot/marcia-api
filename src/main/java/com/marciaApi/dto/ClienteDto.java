@@ -7,6 +7,7 @@ import com.marciaApi.model.Cliente;
 
 public class ClienteDto {
 	
+	private Long clienteId;
 	private String nome;
 	private String cpf;
 	private String numero;
@@ -14,6 +15,7 @@ public class ClienteDto {
 	private LocalDate dataNascimento;
 	
 	public ClienteDto(Cliente cliente) {
+		this.clienteId = cliente.getId();
 		this.nome = cliente.getNome();
 		this.cpf = cliente.getCpf();
 		this.numero = cliente.getNumero();
@@ -24,6 +26,10 @@ public class ClienteDto {
 		return new ClienteDto(cliente);
 	}
 	
+	public Long getClienteId() {
+		return clienteId;
+	}
+
 	public String getNome() {
 		return nome;
 	}
