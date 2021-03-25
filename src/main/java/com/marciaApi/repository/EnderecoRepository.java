@@ -11,5 +11,5 @@ import com.marciaApi.model.Endereco;
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 	
 	List<Endereco> findByCliente(Optional<Cliente> cliente);
-
+	
 }

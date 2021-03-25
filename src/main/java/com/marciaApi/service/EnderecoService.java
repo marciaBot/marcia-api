@@ -55,5 +55,22 @@ public class EnderecoService {
 		return enderecos;
 		
 	} 
+	
+	public Endereco listaEndereco(Long id) {
+		Optional<Endereco> endereco = enderecoRepository.findById(id);
+		if(!endereco.isPresent()) {
+			throw new NullPointerException();
+		}
+		
+		return endereco.get();
+	}
+	
+	public void deletaEndereco(Long id) {
+		Optional<Endereco> endereco = enderecoRepository.findById(id);
+		if(!endereco.isPresent()) {
+			throw new NullPointerException();
+		}
+		enderecoRepository.delete(endereco.get());
+	}
 
 }
