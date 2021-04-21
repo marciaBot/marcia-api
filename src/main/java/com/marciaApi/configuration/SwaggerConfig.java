@@ -1,4 +1,4 @@
-package com.marciaApi;
+package com.marciaApi.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
