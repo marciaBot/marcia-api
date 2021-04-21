@@ -4,20 +4,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -51,6 +51,9 @@ public class Cliente {
 	@Column(name = "UPDATED_AT")
 	@UpdateTimestamp
 	private LocalDateTime updated_at;
+	
+	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Endereco> endereco;
 	
 	@Column(name = "DT_NASCIMENTO", nullable = false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
@@ -98,5 +101,13 @@ public class Cliente {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+	public List<Endereco> getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(List<Endereco> endereco) {
+		this.endereco = endereco;
+	}
+	
+	
 
 }
