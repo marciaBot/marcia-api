@@ -15,4 +15,9 @@ public class ProdutoService {
         Produto produto = produtoRepository.findByCodigoBarra(codigoBarra);
         return produto;
     }
+    
+    public Produto buscarPorId (Long id) {
+    	Produto produto = produtoRepository.getOne(id);
+    	return produto;
+    }
 }
