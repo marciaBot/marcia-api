@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "ENDERECO")
 public class Endereco {
@@ -53,6 +55,7 @@ public class Endereco {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CLIENTE_ID", referencedColumnName = "id")
+	@JsonIgnore
 	private Cliente cliente;
 	
 	@Transient
