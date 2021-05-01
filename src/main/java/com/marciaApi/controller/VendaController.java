@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.marciaApi.dto.ItemVendaDto;
+import com.marciaApi.dto.ItemVendaListDto;
 import com.marciaApi.dto.VendaDto;
 import com.marciaApi.exception.ApiNotFoundException;
 import com.marciaApi.exception.ApiRequestException;
@@ -57,14 +57,10 @@ public class VendaController {
 		}
 	}
 	
-	@GetMapping("/itens-venda/{id}")
-	public ResponseEntity<?> listItensVenda(@PathVariable Long id) {
-		try {
-			List<ItemVenda> itens = vendaService.listItemVenda(id);
-			return ResponseEntity.ok(itens.stream()
-					.map(item -> ItemVendaDto.converter(item)).toArray(ItemVendaDto[]::new));
-		} catch (Exception e) {
-			throw new ApiNotFoundException("Venda não encontrada" + e.getCause());
-		}
+	@GetMapping("/listar-itens-venda/{id}")
+	public ResponseEntity<?> listarItemVenda(@PathVariable Long id){
+		List<ItemVenda> itensVenda = vendaService.itensVenda(id);
+		return ResponseEntity.ok(itensVenda.stream().map(item -> ItemVendaListDto.converter(item)));
 	}
+	
 }

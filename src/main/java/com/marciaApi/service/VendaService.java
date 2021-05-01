@@ -1,6 +1,5 @@
 package com.marciaApi.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.marciaApi.model.ItemVenda;
 import com.marciaApi.model.Venda;
 import com.marciaApi.repository.ClienteRepository;
+import com.marciaApi.repository.ItemVendaRepository;
 import com.marciaApi.repository.VendaRepository;
 
 @Service
@@ -21,16 +21,13 @@ public class VendaService {
 	ItemVendaService itemVendaService;
 	
 	@Autowired
+	ItemVendaRepository itemVendaRepository;
+	
+	@Autowired
 	ClienteRepository clienteRepository;
 	
 	public Venda create(Venda venda) {
-		venda.setCliente(clienteRepository.getOne(venda.getClienteId()));
-		if(venda.getVendasList() != null && !venda.getVendasList().isEmpty()) {
-			venda.setValorTotal(venda.getVendasList()
-					.stream()
-					.map(item -> item.getValor())
-					.reduce(BigDecimal.ZERO, BigDecimal::add));
-		}
+		venda.setCliente(clienteRepository.getOne(venda.getClienteId() != null ? venda.getClienteId() : venda.getCliente().getId() ));
 		vendaRepository.save(venda);
 		return venda;
 	}
@@ -52,11 +49,12 @@ public class VendaService {
 		vendaRepository.deleteById(id);
 	}
 	
-	public List<ItemVenda> listItemVenda(Long id) {
+	public List<ItemVenda> itensVenda(Long id) {
 		Venda venda = vendaRepository.getOne(id);
-		if (venda == null) {
+		if(venda == null) {
 			throw new NullPointerException();
 		}
-		return venda.getVendasList();
+		List<ItemVenda> itensVenda = itemVendaRepository.findByVenda(venda);
+		return itensVenda;
 	}
 }

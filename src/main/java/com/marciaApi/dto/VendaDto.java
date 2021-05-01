@@ -1,17 +1,12 @@
 package com.marciaApi.dto;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-
-import com.marciaApi.model.ItemVenda;
 import com.marciaApi.model.Venda;
 
 public class VendaDto {
 	
 	private Long id;
-	
-	private List<ItemVenda> vendasList;
 	
 	private Long clienteId;
 	
@@ -21,7 +16,6 @@ public class VendaDto {
 
 	public VendaDto(Venda venda) {
 		this.id = venda.getId();
-		this.vendasList = venda.getVendasList();
 		this.clienteId = venda.getClienteId() != null ? venda.getClienteId() : venda.getCliente().getId();
 		this.valorTotal = venda.getValorTotal();
 	}
@@ -32,10 +26,6 @@ public class VendaDto {
 
 	public Long getId() {
 		return id;
-	}
-
-	public List<ItemVenda> getVendasList() {
-		return vendasList;
 	}
 
 	public Long getClienteId() {
