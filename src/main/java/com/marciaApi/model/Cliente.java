@@ -20,7 +20,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -31,6 +30,7 @@ public class Cliente {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 	
 	@Column(name = "NOME", nullable = false)
@@ -45,6 +45,12 @@ public class Cliente {
 	@NotNull(message = "Número não pode ser Nulo")
 	private String numero;
 	
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Endereco> enderecos;
+	
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private List<Venda> vendas;
+	
 	@Column(name = "CREATED_AT", updatable = false)
 	@CreationTimestamp
 	private LocalDateTime created_at;
@@ -53,13 +59,23 @@ public class Cliente {
 	@UpdateTimestamp
 	private LocalDateTime updated_at;
 	
-	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<Endereco> endereco;
-	
 	@Column(name = "DT_NASCIMENTO", nullable = false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataNascimento;
+	
+	public List<Venda> getVendas() {
+		return vendas;
+	}
+	public void setVendas(List<Venda> vendas) {
+		this.vendas = vendas;
+	}
+	
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
 	
 	public LocalDateTime getCreated_at() {
 		return created_at;
@@ -103,13 +119,5 @@ public class Cliente {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-	public List<Endereco> getEndereco() {
-		return endereco;
-	}
-	public void setEndereco(List<Endereco> endereco) {
-		this.endereco = endereco;
-	}
 	
-	
-
 }

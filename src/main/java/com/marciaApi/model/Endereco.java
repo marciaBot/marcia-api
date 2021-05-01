@@ -26,6 +26,7 @@ public class Endereco {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 	
 	@Column(name = "RUA")
@@ -53,7 +54,7 @@ public class Endereco {
 	@Column(name = "OBERSERVACAO")
 	private String observacao;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "CLIENTE_ID", referencedColumnName = "id")
 	@JsonIgnore
 	private Cliente cliente;
