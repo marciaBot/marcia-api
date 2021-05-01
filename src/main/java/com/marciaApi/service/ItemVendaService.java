@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marciaApi.model.ItemVenda;
+import com.marciaApi.model.Venda;
 import com.marciaApi.repository.ItemVendaRepository;
+import com.marciaApi.repository.VendaRepository;
 
 @Service
 public class ItemVendaService {
@@ -15,16 +17,25 @@ public class ItemVendaService {
 	private ItemVendaRepository itemVendaRepository;
 	
 	@Autowired
+	private VendaRepository vendaRepository;
+	
+	@Autowired
 	private ProdutoService produtoService;
 	
 	@Autowired
 	private VendaService vendaService;
 	
 	public ItemVenda create(ItemVenda itemVenda) {
-		itemVenda.setVenda(vendaService.findById(itemVenda.getVendaId()));
+		Venda venda = vendaService.findById(itemVenda.getVendaId());
+		itemVenda.setVenda(venda);
 		itemVenda.setProduto(produtoService.buscarPorId(itemVenda.getProdutoId()));
 		itemVenda.setValor(produtoService.buscarPorId(itemVenda.getProdutoId()).getPreco().multiply(new BigDecimal(itemVenda.getQuantidade())));
 		itemVendaRepository.save(itemVenda);
+		if(venda.getValorTotal() == null) {
+			venda.setValorTotal(BigDecimal.ZERO);
+		}
+		venda.setValorTotal(venda.getValorTotal().add(itemVenda.getValor()));
+		vendaRepository.save(venda);
 		return itemVenda;
 	}
 	
