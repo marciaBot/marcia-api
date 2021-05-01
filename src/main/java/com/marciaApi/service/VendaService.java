@@ -40,6 +40,21 @@ public class VendaService {
 		return venda;
 	}
 	
+	public Venda edit(Long id, Venda venda){
+		Venda vendaPresent = vendaRepository.findById(id).get();
+		if (vendaPresent == null) {
+			throw new NullPointerException();
+		}
+		if(venda.getAprovado() == null) {
+			venda.setAprovado(false);
+		}
+		venda.setId(id);
+		venda.setValorTotal(vendaPresent.getValorTotal());
+		venda.setCliente(vendaPresent.getCliente());
+		vendaRepository.save(venda);
+		return venda;
+	}
+	
 	public void delete(Long id) {
 		Venda venda = vendaRepository.getOne(id);
 		if(venda == null) {

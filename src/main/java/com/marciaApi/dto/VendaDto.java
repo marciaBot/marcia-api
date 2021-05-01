@@ -12,16 +12,29 @@ public class VendaDto {
 	
 	private BigDecimal valorTotal;
 	
+	private String obs;
+	
+	private Boolean aprovado;
 	
 
 	public VendaDto(Venda venda) {
 		this.id = venda.getId();
 		this.clienteId = venda.getClienteId() != null ? venda.getClienteId() : venda.getCliente().getId();
 		this.valorTotal = venda.getValorTotal();
+		this.obs = venda.getObs();
+		this.aprovado = venda.getAprovado();
 	}
 	
 	public static VendaDto converter(Venda venda) {
 		return new VendaDto(venda);
+	}
+	
+	public Boolean getAprovado() {
+		return aprovado;
+	}
+
+	public String getObs() {
+		return obs;
 	}
 
 	public Long getId() {

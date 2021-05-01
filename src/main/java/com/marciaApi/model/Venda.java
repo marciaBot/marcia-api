@@ -30,6 +30,9 @@ public class Venda {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "APROVADO")
+	private Boolean aprovado = false;
+	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "CLIENTE_ID", referencedColumnName = "id")
 	private Cliente cliente;
@@ -42,6 +45,9 @@ public class Venda {
 	@JsonProperty(value = "valorTotal", access = Access.READ_ONLY)
 	private BigDecimal valorTotal;
 	
+	@Column(name = "OBS")
+	private String obs;
+	
 	@Column(name = "CREATED_AT", updatable = false)
 	@CreationTimestamp
 	private LocalDateTime created_at;
@@ -49,6 +55,22 @@ public class Venda {
 	@Column(name = "UPDATED_AT")
 	@UpdateTimestamp
 	private LocalDateTime updated_at;
+	
+	public Boolean getAprovado() {
+		return aprovado;
+	}
+
+	public void setAprovado(Boolean aprovado) {
+		this.aprovado = aprovado;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
 
 	public LocalDateTime getCreated_at() {
 		return created_at;

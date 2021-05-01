@@ -11,24 +11,24 @@ public class ItemVendaListDto {
 	
 	private Long quantidade;
 	
+	private Long vendaId;
+	
 	private BigDecimal valor;
 	
-	private BigDecimal totalConta;
-
 	public ItemVendaListDto(ItemVenda itemVenda) {
+		this.vendaId = itemVenda.getVendaId() != null ? itemVenda.getVendaId() : itemVenda.getVenda().getId();
 		this.id = itemVenda.getId();
 		this.produto = itemVenda.getProduto().getNome();
 		this.quantidade = itemVenda.getQuantidade();
 		this.valor = itemVenda.getValor();
-		this.totalConta = itemVenda.getVenda().getValorTotal();
 	}
 	
 	public static ItemVendaListDto converter(ItemVenda itemVenda) {
 		return new ItemVendaListDto(itemVenda);
 	}
-
-	public BigDecimal getTotalConta() {
-		return totalConta;
+	
+	public Long getVendaId() {
+		return vendaId;
 	}
 
 	public Long getId() {
