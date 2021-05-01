@@ -17,7 +17,7 @@ public class ProdutoService {
     }
     
     public Produto buscarPorId (Long id) {
-    	Produto produto = produtoRepository.getOne(id);
+    	Produto produto = produtoRepository.findById(id).get();
     	return produto;
     }
 }
