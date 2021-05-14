@@ -20,4 +20,9 @@ public class ProdutoService {
     	Produto produto = produtoRepository.findById(id).get();
     	return produto;
     }
+    
+    public Produto buscarPorNome (String nome) {
+    	Produto produto = produtoRepository.findByNome(nome);
+    	return produto;
+    }
 }
