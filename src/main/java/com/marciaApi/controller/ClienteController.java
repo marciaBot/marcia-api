@@ -59,7 +59,7 @@ public class ClienteController {
 		}
 	}
 
-	@GetMapping("/{cpf}")
+	@GetMapping("/cpf/{cpf}")
 	public ResponseEntity<?> listaCliente(@PathVariable(required = true) String cpf) {
 		try {
 			Cliente cliente = clienteService.findByCpf(cpf);
@@ -67,6 +67,17 @@ public class ClienteController {
 			
 		} catch (NullPointerException e) {
 			throw new ApiNotFoundException("CPF não encontrado");
+		}
+	}
+	
+	@GetMapping("/numero/{numero}")
+	public ResponseEntity<?> listaClienteByNumero(@PathVariable(required = true) String numero) {
+		try {
+			Cliente cliente = clienteService.findByNumero(numero);
+			return ResponseEntity.ok(ClienteDto.converter(cliente));
+			
+		} catch (NullPointerException e) {
+			throw new ApiNotFoundException("Número não encontrado");
 		}
 	}
 	
