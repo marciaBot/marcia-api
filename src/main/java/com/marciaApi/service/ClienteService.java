@@ -34,7 +34,12 @@ public class ClienteService {
 		Cliente cliente = clienteRepository.findByCpf(cpf);
 		return cliente;
 	}
-	
+
+	public Cliente findById(Long id) {
+		Cliente cliente = clienteRepository.getOne(id);
+		return cliente;
+	}
+
 	public Cliente findByNumero (String numero) {
 		Cliente cliente = clienteRepository.findByNumero(numero);
 		return cliente;

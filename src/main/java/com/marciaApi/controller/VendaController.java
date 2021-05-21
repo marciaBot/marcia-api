@@ -3,6 +3,9 @@ package com.marciaApi.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.marciaApi.dto.VendaClienteDto;
+import com.marciaApi.model.Cliente;
+import com.marciaApi.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +32,9 @@ public class VendaController {
 	
 	@Autowired
 	VendaService vendaService;
+	@Autowired
+	ClienteService clienteService;
+
 	
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Venda venda) {
@@ -39,7 +45,18 @@ public class VendaController {
 			throw new ApiRequestException("Erro no cadastro" + e.getCause());
 		}
 	}
-	
+
+	@GetMapping
+	public ResponseEntity<?> listAllVenda() {
+		try {
+			List<Venda> vendas = vendaService.findAllVendas();
+			Cliente cliente = clienteService.findById(vendas.get(0).getId());
+			return ResponseEntity.ok(vendas.stream().map(venda -> VendaClienteDto.converter(venda, cliente.getNome())));
+		} catch (Exception e) {
+			throw new ApiNotFoundException("Venda não encontrada" + e.getCause());
+		}
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<?> listVenda(@PathVariable Long id) {
 		try {

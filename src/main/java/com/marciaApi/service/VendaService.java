@@ -31,6 +31,14 @@ public class VendaService {
 		vendaRepository.save(venda);
 		return venda;
 	}
+
+	public List<Venda>  findAllVendas() {
+		List<Venda> vendas = vendaRepository.findAll();
+		if (vendas.isEmpty()) {
+			throw new NullPointerException();
+		}
+		return vendas;
+	}
 	
 	public Venda findById(Long id) {
 		Venda venda = vendaRepository.getOne(id);
