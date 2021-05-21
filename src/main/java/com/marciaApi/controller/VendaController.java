@@ -48,13 +48,10 @@ public class VendaController {
 
 	@GetMapping
 	public ResponseEntity<?> listAllVenda() {
-		try {
-			List<Venda> vendas = vendaService.findAllVendas();
-			Cliente cliente = clienteService.findById(vendas.get(0).getId());
-			return ResponseEntity.ok(vendas.stream().map(venda -> VendaClienteDto.converter(venda, cliente)));
-		} catch (Exception e) {
-			throw new ApiNotFoundException("Venda não encontrada" + e.getCause());
-		}
+		List<Venda> vendas = vendaService.findAllVendas();
+		Cliente cliente = clienteService.findById(vendas.get(0).getId());
+		List<VendaClienteDto> vendaDto = vendas.stream().map(venda -> VendaClienteDto.converter(venda, cliente)).collect(Collectors.toList());
+		return ResponseEntity.ok(vendaDto);
 	}
 
 	@GetMapping("/{id}")
