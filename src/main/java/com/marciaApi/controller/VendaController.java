@@ -51,7 +51,7 @@ public class VendaController {
 		try {
 			List<Venda> vendas = vendaService.findAllVendas();
 			Cliente cliente = clienteService.findById(vendas.get(0).getId());
-			return ResponseEntity.ok(vendas.stream().map(venda -> VendaClienteDto.converter(venda, cliente.getNome())));
+			return ResponseEntity.ok(vendas.stream().map(venda -> VendaClienteDto.converter(venda, cliente)));
 		} catch (Exception e) {
 			throw new ApiNotFoundException("Venda não encontrada" + e.getCause());
 		}

@@ -36,8 +36,8 @@ public class ClienteService {
 	}
 
 	public Cliente findById(Long id) {
-		Cliente cliente = clienteRepository.getOne(id);
-		return cliente;
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		return cliente.get();
 	}
 
 	public Cliente findByNumero (String numero) {
@@ -47,10 +47,10 @@ public class ClienteService {
 	
 	public void delete (Long id) throws Exception{
 		Optional<Cliente> cliente = clienteRepository.findById(id);
-		if(!cliente.isPresent()) {
+		if(cliente.get() == null) {
 			throw new Exception();
 		}
-		clienteRepository.deleteById(id);
+		clienteRepository.delete(cliente.get());
 	}
 
 }

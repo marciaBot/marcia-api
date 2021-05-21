@@ -2,6 +2,7 @@ package com.marciaApi.dto;
 
 import java.math.BigDecimal;
 
+import com.marciaApi.model.Cliente;
 import com.marciaApi.model.Venda;
 
 public class VendaClienteDto {
@@ -19,17 +20,17 @@ public class VendaClienteDto {
     private Boolean aprovado;
 
 
-    public VendaClienteDto(Venda venda, String nome) {
+    public VendaClienteDto(Venda venda, Cliente cliente) {
         this.id = venda.getId();
         this.clienteId = venda.getClienteId() != null ? venda.getClienteId() : venda.getCliente().getId();
         this.valorTotal = venda.getValorTotal();
         this.obs = venda.getObs();
         this.aprovado = venda.getAprovado();
-        this.nomeCliente = nome;
+        this.nomeCliente =  cliente != null ? cliente.getNome() : null;
     }
 
-    public static VendaClienteDto converter(Venda venda, String nome) {
-        return new VendaClienteDto(venda, nome);
+    public static VendaClienteDto converter(Venda venda, Cliente cliente) {
+        return new VendaClienteDto(venda, cliente);
     }
 
     public Boolean getAprovado() {
