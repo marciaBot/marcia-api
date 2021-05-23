@@ -49,8 +49,7 @@ public class VendaController {
 	@GetMapping
 	public ResponseEntity<?> listAllVenda() {
 		List<Venda> vendas = vendaService.findAllVendas();
-		Cliente cliente = clienteService.findById(vendas.get(0).getCliente().getId());
-		List<VendaClienteDto> vendaDto = vendas.stream().map(venda -> VendaClienteDto.converter(venda, cliente)).collect(Collectors.toList());
+		List<VendaClienteDto> vendaDto = vendas.stream().map(venda -> VendaClienteDto.converter(venda, venda.getCliente())).collect(Collectors.toList());
 		return ResponseEntity.ok(vendaDto);
 	}
 
