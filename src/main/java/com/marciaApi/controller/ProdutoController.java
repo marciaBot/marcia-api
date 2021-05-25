@@ -4,6 +4,10 @@ import com.marciaApi.dto.ProdutoDto;
 import com.marciaApi.exception.ApiNotFoundException;
 import com.marciaApi.model.Produto;
 import com.marciaApi.service.ProdutoService;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +30,17 @@ public class ProdutoController {
             return ResponseEntity.ok().body(new ProdutoDto(produto));
         }catch (Exception e){
             throw new ApiNotFoundException("Código não encontrado", e.getCause());
+        }
+    }
+    
+    @GetMapping
+    public ResponseEntity<?> listaTodosProdutos(){
+        try {
+            List<Produto> produtos = produtoService.findAll();
+
+            return ResponseEntity.ok().body(produtos.stream().map(produto -> new ProdutoDto(produto)).collect(Collectors.toList()));
+        }catch (Exception e){
+            throw new ApiNotFoundException("Id não encontrado", e.getCause());
         }
     }
     
